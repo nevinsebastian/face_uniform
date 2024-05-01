@@ -1,19 +1,32 @@
 import face_recognition
 import cv2
+import os
+
+# Get the directory of the current script
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Load images and encode known faces
 known_faces = []
 known_names = []
 
-# Load and encode known faces
-known_faces.append(face_recognition.load_image_file("known_student1.jpg"))
-known_faces.append(face_recognition.load_image_file("known_student2.jpg"))
-known_faces.append(face_recognition.load_image_file("known_student3.jpg"))
+print(current_dir)
 
-known_names = ["Student 1", "Student 2", "Student 3"]
+# Load and encode known faces
+known_faces.append(face_recognition.load_image_file(os.path.join(current_dir, "images/student1.jpg")))
+known_faces.append(face_recognition.load_image_file(os.path.join(current_dir, "images/student2.jpg")))
+known_faces.append(face_recognition.load_image_file(os.path.join(current_dir, "images/student3.jpg")))
+
+
+known_names = ["Nevin","sreejith","binn"]
 
 # Encode known faces
-known_encodings = [face_recognition.face_encodings(img)[0] for img in known_faces]
+known_encodings = []
+for img in known_faces:
+    face_encoding = face_recognition.face_encodings(img)
+    if len(face_encoding) > 0:
+        known_encodings.append(face_encoding[0])
+    else:
+        print("No face found in one of the images.")
 
 # Initialize webcam
 video_capture = cv2.VideoCapture(0)
